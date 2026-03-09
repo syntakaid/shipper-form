@@ -1,49 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JNC Edukasi</title>
-  <link rel="icon" href="https://static.vecteezy.com/system/resources/previews/016/716/181/large_2x/website-3d-icon-png.png" type="image/x-icon">
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      overflow: hidden;
-      font-family: sans-serif;
-    }
-    .iframe-container {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-    }
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-    .loader {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 1.2rem;
-      color: #666;
-      z-index: 10;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PT. Synthesa Anta Karya - Form Data Karyawan Shipper</title>
+    
+    <!-- Menggunakan Logo Perusahaan sebagai Favicon (Ikon Tab) -->
+    <link rel="icon" href="https://cdn.pintarnya.com/images/employer/logo_syn_1749547822.png" type="image/png">
+
+    <style>
+        /* Reset CSS agar tampilan penuh */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* Mencegah scroll ganda */
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Styling untuk Iframe (Wadah Aplikasi) */
+        iframe {
+            display: block;
+            width: 100%;
+            height: 100vh; /* 100% tinggi layar */
+            border: none;
+            opacity: 0; /* Disembunyikan dulu saat loading */
+            transition: opacity 0.5s ease-in;
+        }
+
+        /* Styling untuk Layar Loading */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+
+        /* Styling Logo di Layar Loading */
+        #loading-logo {
+            width: 150px; /* Ukuran logo */
+            height: auto;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        /* Animasi Teks Loading */
+        .loading-text {
+            color: #555;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* Animasi Berdenyut */
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+    </style>
 </head>
 <body>
-  <div class="iframe-container">
-    <div class="loader" id="loader">Loading app...</div>
+
+    <!-- Layar Loading -->
+    <div id="loading-screen">
+        <img id="loading-logo" src="https://cdn.pintarnya.com/images/employer/logo_syn_1749547822.png" alt="Logo PT. Synthesa Anta Karya">
+        <div class="loading-text">MEMUAT APLIKASI...</div>
+    </div>
+
+    <!-- Iframe Aplikasi AppScript -->
+    <!-- onload="appLoaded()" akan memanggil fungsi javascript saat app selesai dimuat -->
     <iframe 
-      src="https://script.google.com/macros/s/AKfycbwbD0NhMvNWLu-rmVY8YxqKSr4zd-oofKYm0x89471up7dYc_i-zthqT4_1n2Tx37CP3Q/exec" 
-      title="Form Data Karyawan - PT. Synthesa Anta Karya"
-      onload="document.getElementById('loader').style.display='none';"
-      allowfullscreen>
+        id="app-frame"
+        src="https://script.google.com/macros/s/AKfycbwbD0NhMvNWLu-rmVY8YxqKSr4zd-oofKYm0x89471up7dYc_i-zthqT4_1n2Tx37CP3Q/exec" 
+        allow="geolocation; microphone; camera"
+        onload="appLoaded()">
     </iframe>
-  </div>
+
+    <script>
+        // Fungsi untuk menghilangkan layar loading setelah AppScript siap
+        function appLoaded() {
+            const loader = document.getElementById('loading-screen');
+            const frame = document.getElementById('app-frame');
+
+            // Beri sedikit jeda agar transisi halus
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                frame.style.opacity = '1';
+                
+                // Hapus elemen loading dari memori setelah transisi selesai
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 500);
+            }, 1000); // Durasi minimal loading 1 detik agar logo terlihat
+        }
+    </script>
+
 </body>
 </html>
-
