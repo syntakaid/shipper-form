@@ -2,107 +2,175 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PT. Synthesa Anta Karya - Form Data Karyawan Shipper</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PT. Synthesa Anta Karya - System</title>
     
-    <!-- Menggunakan Logo Perusahaan sebagai Favicon (Ikon Tab) -->
+    <!-- Favicon -->
     <link rel="icon" href="https://cdn.pintarnya.com/images/employer/logo_syn_1749547822.png" type="image/png">
 
     <style>
-        /* Reset CSS agar tampilan penuh */
+        /* --- RESET & BASIC SETUP --- */
+        * { box-sizing: border-box; }
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden; /* Mencegah scroll ganda */
-            background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
-        }
-
-        /* Styling untuk Iframe (Wadah Aplikasi) */
-        iframe {
-            display: block;
             width: 100%;
-            height: 100vh; /* 100% tinggi layar */
-            border: none;
-            opacity: 0; /* Disembunyikan dulu saat loading */
-            transition: opacity 0.5s ease-in;
+            overflow: hidden;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f6f9;
         }
 
-        /* Styling untuk Layar Loading */
-        #loading-screen {
+        /* --- LOADING SCREEN STYLE --- */
+        #loading-wrapper {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #ffffff;
+            /* Gradient Background Modern */
+            background: linear-gradient(135deg, #eef2f3 0%, #8e9eab 100%);
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 0.5s ease-out;
+            transition: opacity 0.8s ease-in-out, visibility 0.8s;
         }
 
-        /* Styling Logo di Layar Loading */
-        #loading-logo {
-            width: 150px; /* Ukuran logo */
+        /* Kotak Kartu di Tengah (Card) */
+        .loading-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 60px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform: translateY(0);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        /* Logo Perusahaan */
+        .logo-img {
+            max-width: 180px;
             height: auto;
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
+            margin-bottom: 25px;
+            /* Filter drop-shadow agar logo lebih 'pop' */
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
         }
 
-        /* Animasi Teks Loading */
+        /* Text Loading */
         .loading-text {
             color: #555;
             font-size: 14px;
-            font-weight: bold;
-            letter-spacing: 1px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 15px;
+            margin-bottom: 5px;
         }
 
-        /* Animasi Berdenyut */
-        @keyframes pulse {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            50% { transform: scale(1.05); opacity: 1; }
-            100% { transform: scale(0.95); opacity: 0.8; }
+        .loading-subtext {
+            color: #999;
+            font-size: 11px;
+        }
+
+        /* Animasi Spinner (Lingkaran Berputar) */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3; /* Warna abu muda */
+            border-top: 4px solid #2b569a; /* Warna Biru Corporate (bisa disesuaikan) */
+            border-radius: 50%;
+            animation: spin 1s cubic-bezier(0.5, 0.1, 0.4, 0.9) infinite;
+        }
+
+        /* --- ANIMASI --- */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* --- IFRAME STYLE --- */
+        iframe {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: none;
+            opacity: 0;
+            transition: opacity 1s ease-in;
         }
     </style>
 </head>
 <body>
 
-    <!-- Layar Loading -->
-    <div id="loading-screen">
-        <img id="loading-logo" src="https://cdn.pintarnya.com/images/employer/logo_syn_1749547822.png" alt="Logo PT. Synthesa Anta Karya">
-        <div class="loading-text">MEMUAT APLIKASI...</div>
+    <!-- WRAPPER LOADING -->
+    <div id="loading-wrapper">
+        <div class="loading-card">
+            <!-- Logo -->
+            <img class="logo-img" src="https://cdn.pintarnya.com/images/employer/logo_syn_1749547822.png" alt="Logo PT. Synthesa Anta Karya">
+            
+            <!-- Spinner -->
+            <div class="spinner"></div>
+
+            <!-- Teks -->
+            <div class="loading-text">Memuat Sistem</div>
+            <div class="loading-subtext">Mohon tunggu sebentar...</div>
+        </div>
     </div>
 
-    <!-- Iframe Aplikasi AppScript -->
-    <!-- onload="appLoaded()" akan memanggil fungsi javascript saat app selesai dimuat -->
+    <!-- APLIKASI UTAMA -->
     <iframe 
         id="app-frame"
-        src="https://script.google.com/macros/s/AKfycbwbD0NhMvNWLu-rmVY8YxqKSr4zd-oofKYm0x89471up7dYc_i-zthqT4_1n2Tx37CP3Q/exec" 
+        src="https://script.google.com/macros/s/AKfycbwbD0NhMvNWLu-rmVY8YxqKSr4zd-oofKYm0x89471up7dYc_i-zthqT4_1n2Tx37CP3Q/exec"
         allow="geolocation; microphone; camera"
-        onload="appLoaded()">
+        onload="iframeLoaded()">
     </iframe>
 
     <script>
-        // Fungsi untuk menghilangkan layar loading setelah AppScript siap
-        function appLoaded() {
-            const loader = document.getElementById('loading-screen');
-            const frame = document.getElementById('app-frame');
+        // Variabel penanda
+        let isLoaded = false;
+        const minLoadTime = 2000; // Minimal loading 2 detik agar logo sempat terlihat (Branding)
+        const startTime = Date.now();
 
-            // Beri sedikit jeda agar transisi halus
+        function iframeLoaded() {
+            const currentTime = Date.now();
+            const elapsedTime = currentTime - startTime;
+            const remainingTime = Math.max(0, minLoadTime - elapsedTime);
+
+            // Tunggu sisa waktu (jika loading iframe terlalu cepat) baru hilangkan loading screen
             setTimeout(() => {
+                const loader = document.getElementById('loading-wrapper');
+                const frame = document.getElementById('app-frame');
+
+                // Efek Fade Out Loader
                 loader.style.opacity = '0';
-                frame.style.opacity = '1';
                 
-                // Hapus elemen loading dari memori setelah transisi selesai
+                // Efek Fade In Aplikasi
+                frame.style.opacity = '1';
+
+                // Hapus loader dari layar agar bisa klik aplikasi
                 setTimeout(() => {
+                    loader.style.visibility = 'hidden';
                     loader.style.display = 'none';
-                }, 500);
-            }, 1000); // Durasi minimal loading 1 detik agar logo terlihat
+                }, 800); // Sesuai durasi transisi CSS
+
+            }, remainingTime);
         }
+
+        // Fallback: Jika Google lambat merespon onload lebih dari 10 detik, paksa buka
+        setTimeout(() => {
+            const frame = document.getElementById('app-frame');
+            if (frame.style.opacity !== '1') {
+                iframeLoaded();
+            }
+        }, 10000); 
     </script>
 
 </body>
